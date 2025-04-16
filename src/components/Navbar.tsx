@@ -3,9 +3,6 @@ import { BellIcon } from "@heroicons/react/16/solid"
 import { NavLink } from "react-router-dom"
 
 const navigation = [
-	{ name: 'Product', to: '/product', current: true },
-	{ name: 'Recipes', to: '/recipes', current: false },
-	{ name: 'Carts', to: '/carts', current: false },
 	{ name: 'Post', to: '/posts', current: false },
 ]
 
