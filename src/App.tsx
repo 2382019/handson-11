@@ -1,17 +1,28 @@
+// src/App.tsx
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
   createBrowserRouter,
   createRoutesFromElements,
   Route,
-  RouterProvider
+  RouterProvider,
+  Navigate
 } from "react-router-dom";
-import RootLayout from "./layouts/RootLayout";
+
+// Layouts
+import MainLayout from "./layouts/MainLayout";
+import BaseLayout from "./layouts/BaseLayout";
+
+// Pages
 import Home from "./pages/Home";
-import Post from "./pages/Post";
-import { AuthProvider } from "./utils/AuthProvider";
+import Itinerary from "./pages/Itinerary";
+import Culinary from "./pages/Culinary";
+import Packing from "./pages/Packing";
+import Budget from "./pages/Budget";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
-import BaseLayout from "./layouts/BaseLayout";
+
+// Providers
+import { AuthProvider } from "./utils/AuthProvider"; // Ensure this path is correct
 
 const queryClient = new QueryClient();
 
@@ -19,25 +30,35 @@ function App() {
   const router = createBrowserRouter(
     createRoutesFromElements(
       <Route>
-        <Route path="/" element={<RootLayout />}>
-          <Route index element={<Home />} />
-          <Route path="posts" element={<Post />} />
+        <Route path="/" element={<Home />} />
+
+        {/* Planner routes wrapped in MainLayout (includes Sidebar) */}
+        <Route path="/planner" element={<MainLayout />}>
+           <Route index element={<Navigate to="itinerary" replace />} />
+           <Route path="itinerary" element={<Itinerary />} />
+           <Route path="culinary" element={<Culinary />} />
+           <Route path="packing-checklist" element={<Packing />} />
+           <Route path="budget" element={<Budget />} />
         </Route>
-        <Route path="/" element={<BaseLayout/>}>
+
+        {/* Authentication routes (optional, using BaseLayout) */}
+        <Route path="/auth" element={<BaseLayout/>}>
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
         </Route>
+
+        {/* <Route path="*" element={<NotFoundPage />} /> */}
+
       </Route>
     )
   );
+
   return (
-    <>
-      <AuthProvider>
-        <QueryClientProvider client={queryClient}>
-          <RouterProvider router={router} />
-        </QueryClientProvider>
-      </AuthProvider>
-    </>
+    <AuthProvider>
+      <QueryClientProvider client={queryClient}>
+        <RouterProvider router={router} />
+      </QueryClientProvider>
+    </AuthProvider>
   );
 }
 
