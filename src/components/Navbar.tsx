@@ -4,6 +4,8 @@ import { NavLink } from "react-router-dom"
 
 const navigation = [
 	{ name: 'Post', to: '/posts', current: false },
+
+	//coba
 ]
 
 function classNames(...classes: string[]) {
